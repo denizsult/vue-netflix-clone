@@ -1,0 +1,47 @@
+@font-face {
+    font-family: Netflix Sans;
+    src: url(/src/assets/fonts/NetflixSansRegular.woff);
+}
+
+body {
+
+
+    background: #141414;
+    color: #fff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 1.2;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 17px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    margin: 0 !important;
+
+
+}
+
+.logo {
+    width: 100px;
+    position: absolute;
+    left: 40px;
+    cursor: pointer;
+    display: inline-block;
+    top: 15px;
+    
+}
+
+.center-div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 50%;
+    height: 50%;
+}
+
+/* EDIT CARD */
