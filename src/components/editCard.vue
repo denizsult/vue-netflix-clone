@@ -4,6 +4,8 @@
       <h1 class="card-baslik">Profili Düzenle</h1>
 
       <div class="profile-data">
+        
+        
         <div class="avatar">
           <img class="edit-avatar" src="../assets/images/luci.png" alt="" />
         </div>
@@ -13,7 +15,7 @@
           <div
             style="text-align: left !important; width: 100%; padding-top: 20px"
           >
-            <h2 style="font-size: 1vw; color: lightgrey">Dil:</h2>
+            <h2 style="font-size: 1rem; color: lightgrey">Dil:</h2>
             <select class="edit-select">
               <option value="TR">Türkçe</option>
             </select>
@@ -71,7 +73,7 @@ export default {
 
 
 .card-baslik {
-    font-size: 4vw;
+    font-size: 2rem;
     margin: 0;
 }
 
@@ -82,7 +84,7 @@ export default {
     display: -moz-box;
     display: -ms-flexbox;
     display: flex;
-    padding: 2em 0;
+    padding: 2em 1em;
 
 }
 
@@ -97,21 +99,21 @@ export default {
 .edit-avatar {
     white-space: nowrap;
     margin-right: 1.5vw;
-    width: 8vw;
+    width: 80%;
     height: 150px;
     min-width: 80px;
     max-width: 180px;
 }
 
 .edit-input {
-    width: 18em;
-    height: 2em;
+    width: 100%;
+    height: 30px;
     background: #666;
     border: 1px solid transparent;
     margin: 0 .8em 0 0;
     padding: .2em .6em;
     color: #fff;
-    font-size: 1.3vw;
+    font-size: 1rem;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -146,10 +148,11 @@ export default {
     background-color: white;
     color: #000;
     padding: 10px;
-    width: 8vw;
+    width: 9rem;
     border: 1px solid #fff;
     font-weight: 700;
-    font-size: 1.2vw;
+    font-size: 1rem;
+    margin: 20px ;
     letter-spacing: 2px;
 }
 
@@ -165,19 +168,22 @@ export default {
     background-color: transparent;
     color: grey;
     padding: 10px;
-    height: 50px;
+    height: 40px;
     margin-left: 20px;
-    width: 6vw;
+    width: 6rem;
     border: 1px solid grey;
     font-weight: 700;
-    font-size: 1.1vw;
+    font-size: 1rem;
     letter-spacing: 2px;
 }
 
 .exit-button:hover{
-    
-  
+
     border-color: white;
     cursor: pointer;
+}
+
+@media screen {
+  
 }
 </style>

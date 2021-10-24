@@ -1,8 +1,6 @@
 <template>
 <div>
-  <router-link to="/">
-    <img src="../assets/logo.png" class="logo" alt=""
-  /></router-link></div>
+  </div>
 </template>
 <script>
 export default {

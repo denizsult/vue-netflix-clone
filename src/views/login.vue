@@ -80,7 +80,7 @@
                         Netflix'e katılmak ister misiniz?
                         <span style="color: white;">Şimdi kaydolun.</span>
                         <br />
-                     
+
                         <br />Bu sayfa robot olmadığınızı kanıtlamak için Google reCAPTCHA tarafından korunuyor.
                         <a
                             href="#"
@@ -159,7 +159,6 @@ export default {
     width: 100%;
     margin-top: 17px;
 }
-
 
 input[type="checkbox"] {
     height: 16px;
@@ -303,6 +302,9 @@ input[type="checkbox"] {
         left: 20px;
         top: 20px;
         opacity: 1 !important;
+    }
+    .bg{
+        display: none;
     }
 }
 </style>
