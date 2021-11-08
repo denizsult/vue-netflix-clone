@@ -1,5 +1,8 @@
 <template>
-  <div :style="{ background: scrollPosition > 50 ? 'black' : 'transparent' }" class="navbar-pinned">
+  <div
+    :style="{ background: scrollPosition > 50 ? 'black !important' : 'transparent' }"
+    class="navbar-pinned"
+  >
     <div class="navbar">
       <div class="nav-1">
         <router-link to="/">
@@ -15,6 +18,7 @@
         </ul>
       </div>
     </div>
+
     <div class="nav-2">
       <div>
         <img width="26" src="../assets/images/search.png" alt />
@@ -25,7 +29,7 @@
       <div>
         <div class="profile-nav">
           <img class="nav-2-img" src="../assets/images/luci.png" alt />
-          <img width="10"  id="drop" src="../assets/images/drop.png" alt />
+          <img width="10" id="drop" src="../assets/images/drop.png" alt />
 
           <div class="profile-nav-menu">
             <img src="../assets/images/drop.png" alt />
@@ -35,15 +39,18 @@
                   <img src="../assets/images/luci.png" alt />
                   {{ item.name }}
                 </li>
-                <li class="menu-item">Profil Yönetimi</li>
-                <hr style="color:lightgrey; width:100%; opacity:0.5">
-                <ul class="menu-ul-2" >
+                <li class="menu-item">
+                  <router-link
+                    style="color: white !important;text-decoration: none"
+                    to="/browse"
+                  >Profil Yönetimi</router-link>
+                </li>
+                <hr style="color:lightgrey; width:100%; opacity:0.5" />
+                <ul class="menu-ul-2">
                   <li class="menu-item-2">Hesap</li>
                   <li class="menu-item-2">Yardım Merkezi</li>
                   <li class="menu-item-2">Oturumu Kapat</li>
                 </ul>
-
-              
               </ul>
             </div>
           </div>
@@ -51,23 +58,15 @@
       </div>
     </div>
   </div>
-  <div style="min-height: 1000px;
-">
+  <div @click="genelTiklama" :style="modal ? { opacity: 0.3 } : { opacity: 1 }" class="genel">
     <div class="billboard">
-      <img
-        class="billboard-img"
-        src="https://occ-0-778-2773.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABddNpkL7NpQVUS90gDAV_LqoPV3PrHMkm0RCo7NS_d-1PN0ndT7cl0qUmRe6-uiIeak9bquU9chofjMuo2t5I7QMcbPE.webp?r=91b"
-        alt
-      />
+      <img class="billboard-img" src="../assets/images/bg.jpg" alt />
 
       <div class="billboard-content">
-        <img
-          src="https://occ-0-778-2773.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABScnUzARFTcFjueKo9wSaeZrIGXQoGZqWY34-hqzo5wDdqr8OK7DVseN1MQURFb6MolMdfS0ux35ajFZFTEAbmAr29g50-8DFs7R.webp?r=473"
-          alt
-        />
+        <img src="../assets/images/content-img.png" alt />
       </div>
       <div class="billboard-content-2">
-        <h1>"Hellblazer" adlı çizgi romandan uyarlanan bu gerilimde, doğaüstü güçlere meraklı bir özel dedektif intihar gibi görünen bir ölümü soruşturur.</h1>
+        <h1>Gün Doğmadan Önce, yolları kesişen bir kadın ve bir erkeğin hikayesini anlatıyor. Sıradan bir Avrupa yolculuğu sırasında trende karşılaşıp tanışan iki farklı insan, Jesse ve Celine bu yolculuğa sıradışı bir şekilde sürdürürler.</h1>
       </div>
       <div class="billboard-buttons">
         <button class="billboard-button-1">
@@ -87,9 +86,13 @@
       </div>
 
       <div ref="inner" :style="innerStyles" class="inner">
-        <div v-for="(item) in items" :key="item.id" class="card">
-          <img :src="item" alt />
-          <div class="item-card">xd</div>
+        <div v-for="(item) in items" @click="openModal($event, item)" :key="item.id" class="card">
+          <img :src="'http://image.tmdb.org/t/p/w780/' + item.backdrop_path" />
+          <div class="item-card">
+            <h2>{{ item.title }}</h2>
+
+            <small style="font-weight:900;font-size:20px">Rank: {{ item.vote_average }}</small>
+          </div>
         </div>
       </div>
 
@@ -108,13 +111,32 @@
 
     <div ref="inner" :style="innerStyles" class="inner">
       <div v-for="(item) in items" :key="item.id" class="card">
-        <img :src="item" alt />
-        <div class="item-card">xd</div>
+        <img :src="'http://image.tmdb.org/t/p/w780/' + item.backdrop_path" />
+        <div class="item-card">
+          <h2>{{ item.title }} <img width="30" src="../assets/images/info.png" alt /></h2>          
+
+
+          <small>Rank: {{ item.vote_average }}</small>
+        </div>
       </div>
     </div>
 
     <div @click="next" class="btn-right">
       <img width="50" src="../assets/images/right.png" alt />
+    </div>
+  </div>
+
+  <div v-if="modal" class="modal">
+    <img style="width: 100%;" :src="'http://image.tmdb.org/t/p/w780/' + modalData.backdrop_path" />
+    <button @click="modal = false" id="close">X</button>
+
+    <div class="modal-buttons">
+      <button class="modal-button-1">
+        <img width="50" src="http://simpleicon.com/wp-content/uploads/play1.svg" alt /> Oynat
+      </button>
+      <button>2</button>
+      <button>3</button>
+      <button>4</button>
     </div>
   </div>
 </template>
@@ -123,22 +145,13 @@
 
 
 import router from "../router";
+import axios from 'axios'
 export default {
 
   data() {
     return {
       user: "",
-      items: [
-        "https://occ-0-778-2773.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABXHYugp3DyICv0mSqxPNR7BhU00EkSGf9iThuAdwRmD0QjxDm2xya6QJ39bKsPlbCuAsENubFp3AD_Qr1d0X5ob4-E4.webp?r=6c3", "https://occ-0-778-2773.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABXHYugp3DyICv0mSqxPNR7BhU00EkSGf9iThuAdwRmD0QjxDm2xya6QJ39bKsPlbCuAsENubFp3AD_Qr1d0X5ob4-E4.webp?r=6c3", "https://occ-0-778-2773.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABXHYugp3DyICv0mSqxPNR7BhU00EkSGf9iThuAdwRmD0QjxDm2xya6QJ39bKsPlbCuAsENubFp3AD_Qr1d0X5ob4-E4.webp?r=6c3", "https://occ-0-778-2773.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABXHYugp3DyICv0mSqxPNR7BhU00EkSGf9iThuAdwRmD0QjxDm2xya6QJ39bKsPlbCuAsENubFp3AD_Qr1d0X5ob4-E4.webp?r=6c3", "https://occ-0-778-2773.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABXHYugp3DyICv0mSqxPNR7BhU00EkSGf9iThuAdwRmD0QjxDm2xya6QJ39bKsPlbCuAsENubFp3AD_Qr1d0X5ob4-E4.webp?r=6c3", "https://occ-0-778-2773.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABXHYugp3DyICv0mSqxPNR7BhU00EkSGf9iThuAdwRmD0QjxDm2xya6QJ39bKsPlbCuAsENubFp3AD_Qr1d0X5ob4-E4.webp?r=6c3", "https://occ-0-778-2773.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABXHYugp3DyICv0mSqxPNR7BhU00EkSGf9iThuAdwRmD0QjxDm2xya6QJ39bKsPlbCuAsENubFp3AD_Qr1d0X5ob4-E4.webp?r=6c3",
-
-
-
-        "https://occ-0-778-2773.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABUyHp5bSzxxXfSYAt4cT7hfEvXOXuPc5sVyF38hpsPWOaYmD2L2LkbwEfWPdPK_0t-cnwHyhdbIZ6I3MWGe5_DNgCIOWa61atWkb9ytkb2JF5Gfj8seSC0GChwiY.jpg?r=4aa",
-
-
-
-        "https://occ-0-778-2773.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABddF0BrAeA9HlQ5-WNdFvLp8UJxsVgAjyfFLA4QEXSedfKUlmcZeX5R7vGDby-1RPs78W31NrtftSI4olgRffv1HPKw.webp?r=cd8",
-      ],
+      items: [],
 
       profiles: {
         Profil1: {
@@ -159,6 +172,8 @@ export default {
         },
 
       },
+      modal: false,
+      modalData: '',
       scrollPosition: 0,
     };
   },
@@ -166,7 +181,20 @@ export default {
     this.user = JSON.parse(localStorage.getItem("user"));
     this.user != null ? true : router.push("/browse");
     window.addEventListener('scroll', this.handleScroll);
+    axios('https://api.themoviedb.org/3/discover/movie?region=TR&api_key=c667b178831c1113537d09a0da92888f').then((res) => {
+      this.items = res.data.results;
+    })
+  },
 
+  mounted() {
+    /* $(window).click(function () {
+      //Hide the menus if visible
+    });
+
+    $('#modal').click(function (event) {
+      alert('xd')
+      event.stopPropagation();
+    }); */
   },
 
 
@@ -182,10 +210,21 @@ export default {
 
     },
 
+    genelTiklama() {
+      return this.modal ? true : false;
+
+    },
+    openModal(event, data) {
+      if (!this.genelTiklama()) {
+        this.modal = true;
+        this.modalData = data;
+      }
+
+
+    },
+
     handleScroll() {
-
       this.scrollPosition = window.scrollY;
-
     }
 
 
@@ -195,294 +234,64 @@ export default {
 </script>
 
 <style>
-.navbar-pinned {
-  left: 0;
-  right: 0;
-  top: 0;
+.modal {
   position: fixed;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 3rem;
-}
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.nav-1 {
-  display: flex;
-  align-content: center;
-  justify-content: center;
-}
-.nav-2 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.navbar-logo {
-  width: 100px;
-  padding-top: 13px;
-  margin-right: 25px;
-}
-
-.navbar-menu {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  list-style: none;
-}
-
-.navbar-menu-item {
-  padding-left: 15px;
-    font-weight: 100;
-  font-size: 16px;
-
-}
-
-.billboard {
-  position: relative;
-  min-height: 1000px;
-  z-index: 0;
-}
-
-.billboard-img {
-  position: relative;
   left: 0;
+  bottom: 0px;
   right: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  height: 90vh;
-  opacity: 0.7;
+  top: 30px;
+  margin: auto;
+  background: #141414;
+  border: 1px solid black;
+  width: 50vw;
+  height: 100%;
+  border-radius: 15px;
+  z-index: 2;
+  transition: width 2.5s, height 2.5s;
 }
-.billboard-content {
+.modal:first-child {
+  width: 50vw;
+  height: 70%;
+}
+#close {
   position: absolute;
-  top: 18%;
-  left: 5%;
-}
-.billboard-content-2 {
-  position: absolute;
-  top: 45%;
-  left: 5%;
-  color: #fff;
-  font-weight: 200;
-  line-height: normal;
-  width: 30%;
-  font-size: 0.9rem;
-  height: 200px;
-  text-shadow: 2px 2px 4px rgb(0 0 0 / 45%);
-  margin-top: 0.1vw;
-}
-.billboard-buttons {
-  position: absolute;
-  display: flex;
-  align-content: center;
-  top: 68%;
-  left: 5%;
-  height: 70px;
-  width: 500px;
-}
-
-.billboard-button-1 {
-  background-color: rgb(255, 255, 255);
-  color: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  font-size: 1.5rem;
-  width: 40%;
-  font-weight: 600;
-  margin-right: 10px;
+  right: 10px;
+  top: 10px;
+  padding: 15px;
+  width: 40px;
+  opacity: 0.9;
   cursor: pointer;
-}
-.billboard-button-2 {
-  background-color: rgba(109, 109, 110, 0.7);
-  font-size: 1.5rem;
-  width: 60%;
-  font-weight: 600;
-  display: flex;
-  border-radius: 5px;
-  justify-content: center;
-  align-items: center;
+  background: #141414;
+  border-radius: 50px;
   color: white;
-  cursor: pointer;
+  font-size: 20px;
+  padding: 5px;
 }
 
-.billboard-button-1:hover {
-  background-color: rgb(255, 255, 255, 0.9);
-}
-.billboard-button-2:hover {
-  background-color: rgba(109, 109, 110, 0.5);
-}
-.slide {
+.modal-buttons {
   position: relative;
-  top: -100px;
-  left: -30px;
-  width: 2144px;
-  height: 250px;
-  overflow: hidden;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 150px;
-}
-.slide-2 {
-  position: relative;
-  top: -100px;
-  left: 5%;
-  width: 2008px;
-  height: 200px;
-  overflow: hidden;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-}
-.slide:hover > .btn-left,
-.btn-right {
-  display: block !important;
-}
-
-.card {
-  display: inline-flex;
-  flex-direction: column;
-  cursor: pointer;
-  z-index: 0;
-}
-
-.inner {
-  transition: transform 0.2s;
-  white-space: nowrap;
-}
-
-.card > img {
-  width: 345px;
-  border: 3px solid transparent;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: width 0.5s, height 0.5s;
-}
-.card:hover > img {
-  width: 400px;
-}
-.card:hover > .item-card {
-  display: block;
-}
-
-.item-card {
-  background: rgb(rgb(20, 20, 20), green, blue);
-  display: flex;
-  width: 250px;
-  display: none;
-}
-
-.slide-head {
-  position: absolute;
-  top: -30px;
-  font-size: 25px;
-  left: 50px;
-  color: white;
-}
-
-.btn-left {
-  position: absolute;
-  top: 50%;
   left: 30px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  z-index: 1;
-}
-
-.btn-right {
-  position: absolute;
-  top: 50%;
-  left: 96.5%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  z-index: 1;
-}
-
-.nav-2 > div {
-  margin-right: 25px;
-}
-
-.profile-nav {
+  bottom: 120px;
+  width: 35%;
   display: flex;
-  align-items: center;
+  flex-direction: row;
   justify-content: space-between;
-
 }
 
-.nav-2-img {
-  width: 35px;
+.modal-button-1 {
+  width: 160px;
+  height: 40px;
   border-radius: 5px;
-  margin-right: 10px;
-}
-
-.profile-nav:hover > .profile-nav-menu {
-  display: block;
- 
-}
-.profile-nav:hover > #drop{
-    transform: rotate(180deg);
-}
-.profile-nav-menu {
-  position: absolute;
-  top: 60px;
-  right: 78px;
-  display: none;
-}
-.menu {
-  background: rgb(22, 22, 22);
-  width: 170px;
-  height: 370px;
-  border: 0.5px solid grey;
-  
-}
-.profile-nav-menu > img {
-  position: relative;
-  width: 13px;
-  top: 5px;
-  left: 132px;
-  transform: rotate(180deg);
-}
-.menu-ul-2{
-  list-style: none;
-  padding: 0 10px;
-}
-.menu-item {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  cursor: pointer;
+  border: none;
   padding: 10px;
-}
-
-.menu-item-2 {
-  padding-bottom: 7px;
- 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 600;
   cursor: pointer;
 }
-.menu-item > img {
-  width: 30px;
-  margin-right: 10px;
-  border-radius: 5px;
-}
-.menu > ul {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  list-style: none;
-  align-items: flex-start;
-  padding: 0;
-}
-.menu > h5 {
-  font-weight: 400;
-  margin: 0;
+.genel {
+  min-height: 1000px;
 }
 </style>

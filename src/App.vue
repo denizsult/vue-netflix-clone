@@ -11,5 +11,7 @@ export default {
 </script>
 <style>
   @import './assets/css/main.css';
+  @import './assets/css/mainPage.css';
+  @import './assets/css/modal.css';
 </style>
 
