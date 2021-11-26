@@ -2,7 +2,8 @@
   <router-link to="/">
     <img src="../assets/logo.png" class="logo" alt />
   </router-link>
-  <EditCard @iptal="editable = false" :user="userData" v-if="editable" />
+  <EditCard @iptal="editRes" :user="userData" v-if="editable" />
+
   <div v-if="!editable" class="center-div">
     <div class="profiles">
       <h1 class="profile-label">{{ !edit ? "Kim izliyor?" : "Profil Yönetimi:" }}</h1>
@@ -50,43 +51,35 @@ export default {
     return {
       edit: false,
       editable: false,
-      userData: "",
+      userData: JSON.parse(localStorage.getItem("user")),
 
       profiles: {
         Profil1: {
-          name: "Deniz",
+          name: "",
           image: "../assets/images/luci.png",
         },
-        Profil2: {
-          name: "Deniz2",
-          image: "../assets/images/luci.png",
-        },
-        Profil3: {
-          name: "Deniz3",
-          image: "../assets/images/luci.png",
-        },
-        Profil4: {
-          name: "Deniz4",
-          image: "../assets/images/luci.png",
-        },
-        Profil5: {
-          name: "Deniz5",
-          image: "../assets/images/luci.png",
-        },
+
       },
     };
   },
-
+  mounted() {
+    if (this.userData) {
+      this.profiles.Profil1.name = this.userData.name;
+    }
+  },
 
   methods: {
     editCard(data) {
       this.userData = data;
       this.editable = true;
     },
+    editRes(data) {
+      this.editable = false;
+      this.profiles.Profil1.name = data.name;
 
-    go(data) {
+    },
 
-      localStorage.setItem("user", JSON.stringify(data));
+    go() {
       router.push("/");
     }
   },
@@ -120,7 +113,7 @@ export default {
 }
 
 .profile-label {
-  font-size: 3.5rem;
+  font-size: 4rem;
   margin: 0;
   font-weight: unset;
 }

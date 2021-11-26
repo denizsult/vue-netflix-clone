@@ -8,18 +8,26 @@
 
         <div class="form-center">
             <div class="box">
-                <h1 class="title">Oturum Aç</h1>
+                <h1 class="title">Kayıt Ol</h1>
                 <div class="form">
                     <form @submit.prevent="giris">
                         <div v-show="error" class="error">
-                            <div class="info-text">
-                                <p style="font-size:17px; font-weight:500">{{ errorText }}</p>
+                            <div class="error-text">
+                                <p>{{ errorText }}</p>
                             </div>
                         </div>
 
-                        <div v-show="success" class="success">
-                            <div class="info-text">
-                                <p style="font-size:16px; font-weight:500">{{ successText }}</p>
+                        <div>
+                            <input
+                                class="input"
+                                placeholder="Adınız"
+                                type="text"
+                                v-model="name"
+                                @input="nameErr = false"
+                                :style="[nameErr ? { borderBottomColor: '#e87c03' } : '']"
+                            />
+                            <div class="valid">
+                                <small v-show="nameErr">İsim Alanı Zorunludur.</small>
                             </div>
                         </div>
 
@@ -29,47 +37,41 @@
                                 placeholder="E-posta veya telefon numarası"
                                 type="text"
                                 v-model="email"
-                                @focus="error = false, success = false"
                                 @input="emailErr = false"
                                 :style="[emailErr ? { borderBottomColor: '#e87c03' } : '']"
                             />
                             <div class="valid">
-                                <small
-                                    v-show="emailErr"
-                                >Lütfen geçerli bir telefon numarası veya e‑posta adresi girin.</small>
+                                <small v-show="emailErr">E-Posta Alanı Zorunludur.</small>
                             </div>
                         </div>
 
-                        <div  style="height:100px">
+                        <div style="height:100px">
                             <input
                                 class="input"
                                 :type="type ? 'password' : 'text'"
+                                                                maxlength="25"
+
                                 v-model="password"
-                                maxlength="25"
                                 @input="passErr = false"
                                 placeholder="Parola"
                                 :style="[passErr ? { borderBottomColor: '#e87c03' } : '']"
                             />
-                             <div class="valid">
-                                <small v-show="passErr">Parolanız 4 ila 20 karakter olmalıdır.</small>
+                            <div class="valid">
+                                <small v-show="passErr">Parola Alanı Zorunludur.</small>
                             </div>
                             <div
                                 @click="type = !type"
                                 class="passShow"
                             >{{ type ? 'Göster' : 'Gizle' }}</div>
-                           
                         </div>
 
                         <button type="submit" class="log-btn">
-                            <span v-if="spin == false">Oturum Aç</span>
+                            <div v-if="!spin">Kayıt Ol</div>
                             <div class="loader" v-else></div>
                         </button>
                     </form>
                     <div class="row-form">
-                        <div class="input-down">
-                            <input style="background:#737373" type="checkbox" name id />
-                            <label>Beni hatırla</label>
-                        </div>
+                        <div class="input-down"></div>
                         <span class="input-down">Yardım ister misiniz?</span>
                     </div>
 
@@ -80,11 +82,13 @@
 
                     <div class="text-kay">
                         <p>
-                            Netflix'e katılmak ister misiniz?
-                            <router-link to="/register">
-                                <span style="color: white;">Şimdi Kayıt Ol</span>
+                            Netflix'e hesabın var mı?
+                            <router-link to="/login">
+                                <span style="color: white;">Giriş Yap</span>
                             </router-link>
+
                             <br />
+
                             <br />Bu sayfa robot olmadığınızı kanıtlamak için Google reCAPTCHA tarafından korunuyor.
                             <a
                                 href="#"
@@ -102,55 +106,51 @@
 export default {
     data() {
         return {
+            name: '',
             email: "",
             password: "",
+            nameErr: false,
             emailErr: false,
             passErr: false,
-            errorText: "Girdiğiniz Bilgiler Hatalı!",
-            successText: "🍿 Kayıt Başarılı! Giriş Yapabilirsiniz 🍿",
-            error: false,
-            success: false,
             spin: false,
+            errorText: "",
+            error: false,
+            axErrpass: false,
+            axErremail: false,
             type: true,
 
-
         };
-    },
-
-    mounted() {
-        this.$route.query.status == "basarili" ? this.success = true : this.success = false;
     },
     methods: {
         giris() {
 
-            this.spin = !this.spin;
+
+            this.name == "" ? this.nameErr = true : this.nameErr = false;
             this.email == "" ? this.emailErr = true : this.emailErr = false;
             this.password == "" ? this.passErr = true : this.passErr = false;
-            this.email == "" || this.password == "" ? this.spin = false : this.spin = true;
+            this.email == "" || this.password == "" || this.name == "" ? this.spin = false : this.spin = true;
 
 
 
             if (this.email != "" && this.password != "" && this.spin) {
-                this.$http.post('/login', {
+                this.$http.post('/register', {
+                    name: this.name,
                     email: this.email,
                     password: this.password
-                }).then((response) => {
 
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('user', JSON.stringify(response.data));
-                    this.$router.push('/browse');
-
-                }).catch(error => {
-
-                    if (error.response.status == 400) {
-                        this.error = true;
-                        this.spin = false;
-                        setTimeout(() => {
-                            this.error = false;
-
-
-                        }, 1500);
+                }).then(response => {
+                    if (response.status == 201) {
+                        this.$router.push('/login?status=basarili');
                     }
+                }).catch(error => {
+                    this.error = true;
+                    this.spin = false;
+                    this.errorText = error.response.data;
+                    setTimeout(() => {
+                        this.error = false;
+
+
+                    }, 1500);
                 });
 
             }
@@ -158,8 +158,11 @@ export default {
         },
 
 
+
     }
 }
 
+
 </script>
+
  

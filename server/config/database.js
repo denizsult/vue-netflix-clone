@@ -1,0 +1,1 @@
+const Schema = mongoose.Schema;

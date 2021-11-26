@@ -26,6 +26,7 @@
       <div>
         <img width="26" src="../assets/images/notification.png" alt />
       </div>
+
       <div>
         <div class="profile-nav">
           <img class="nav-2-img" src="../assets/images/luci.png" alt />
@@ -35,10 +36,12 @@
             <img src="../assets/images/drop.png" alt />
             <div class="menu">
               <ul>
-                <li v-for="item in profiles" :key="item.id" class="menu-item">
-                  <img src="../assets/images/luci.png" alt />
-                  {{ item.name }}
-                </li>
+                <div style="height:100px">
+                  <li v-for="item in profiles" :key="item.id" class="menu-item">
+                    <img src="../assets/images/luci.png" alt />
+                    {{ item.name }}
+                  </li>
+                </div>
                 <li class="menu-item">
                   <router-link
                     style="color: white !important;text-decoration: none"
@@ -46,10 +49,11 @@
                   >Profil Yönetimi</router-link>
                 </li>
                 <hr style="color:lightgrey; width:100%; opacity:0.5" />
+
                 <ul class="menu-ul-2">
                   <li class="menu-item-2">Hesap</li>
                   <li class="menu-item-2">Yardım Merkezi</li>
-                  <li class="menu-item-2">Oturumu Kapat</li>
+                  <li @click="logout" class="menu-item-2">Oturumu Kapat</li>
                 </ul>
               </ul>
             </div>
@@ -58,6 +62,7 @@
       </div>
     </div>
   </div>
+
   <div @click="genelTiklama" :style="modal ? { opacity: 0.3 } : { opacity: 1 }" class="genel">
     <div class="billboard">
       <img class="billboard-img" src="../assets/images/bg.jpg" alt />
@@ -86,12 +91,23 @@
       </div>
 
       <div ref="inner" :style="innerStyles" class="inner">
-        <div v-for="(item) in items" @click="openModal($event, item)" :key="item.id" class="card">
+        <div v-for="(item) in items" :key="item.id" class="card">
           <img :src="'http://image.tmdb.org/t/p/w780/' + item.backdrop_path" />
-          <div class="item-card">
-            <h2>{{ item.title }}</h2>
 
-            <small style="font-weight:900;font-size:20px">Rank: {{ item.vote_average }}</small>
+          <div class="infoWindow">
+            <div class="item-card">
+              <div>
+                <h2>{{ item.title }}</h2>
+                <button>Listeme Ekle</button>
+                <img
+                  @click="openModal($event, item)"
+                  width="30"
+                  src="../assets/images/info.png"
+                  alt
+                />
+              </div>
+              <small>Rank: {{ item.vote_average }}</small>
+            </div>
           </div>
         </div>
       </div>
@@ -102,31 +118,7 @@
     </div>
   </div>
 
-  <div class="slide-2">
-    <h3 class="slide-head">Gündemdekiler</h3>
-
-    <div @click="prev" class="btn-left">
-      <img width="50" src="../assets/images/left.png" alt />
-    </div>
-
-    <div ref="inner" :style="innerStyles" class="inner">
-      <div v-for="(item) in items" :key="item.id" class="card">
-        <img :src="'http://image.tmdb.org/t/p/w780/' + item.backdrop_path" />
-        <div class="item-card">
-          <h2>{{ item.title }} <img width="30" src="../assets/images/info.png" alt /></h2>          
-
-
-          <small>Rank: {{ item.vote_average }}</small>
-        </div>
-      </div>
-    </div>
-
-    <div @click="next" class="btn-right">
-      <img width="50" src="../assets/images/right.png" alt />
-    </div>
-  </div>
-
-  <div v-if="modal" class="modal">
+  <div v-if="modal" class="modal animate__animated animate__zoomIn">
     <img style="width: 100%;" :src="'http://image.tmdb.org/t/p/w780/' + modalData.backdrop_path" />
     <button @click="modal = false" id="close">X</button>
 
@@ -146,6 +138,8 @@
 
 import router from "../router";
 import axios from 'axios'
+import 'animate.css';
+
 export default {
 
   data() {
@@ -156,18 +150,6 @@ export default {
       profiles: {
         Profil1: {
           name: "Deniz",
-          image: "../assets/images/luci.png",
-        },
-        Profil2: {
-          name: "Deniz2",
-          image: "../assets/images/luci.png",
-        },
-        Profil3: {
-          name: "Deniz3",
-          image: "../assets/images/luci.png",
-        },
-        Profil4: {
-          name: "Deniz4",
           image: "../assets/images/luci.png",
         },
 
@@ -187,6 +169,9 @@ export default {
   },
 
   mounted() {
+    this.user = JSON.parse(localStorage.getItem("user"));
+    this.profiles.Profil1.name = this.user.name;
+
     /* $(window).click(function () {
       //Hide the menus if visible
     });
@@ -225,8 +210,11 @@ export default {
 
     handleScroll() {
       this.scrollPosition = window.scrollY;
+    },
+    logout() {
+      localStorage.setItem('isLoggedIn', 'false'),
+        this.$router.push('/login')
     }
-
 
 
   }
@@ -239,15 +227,13 @@ export default {
   left: 0;
   bottom: 0px;
   right: 0;
-  top: 30px;
+  top: 100px;
   margin: auto;
   background: #141414;
   border: 1px solid black;
-  width: 50vw;
+  width: 50%;
   height: 100%;
-  border-radius: 15px;
   z-index: 2;
-  transition: width 2.5s, height 2.5s;
 }
 .modal:first-child {
   width: 50vw;
@@ -293,5 +279,14 @@ export default {
 }
 .genel {
   min-height: 1000px;
+}
+
+.item-card > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 10px;
 }
 </style>

@@ -1,11 +1,15 @@
-import { createApp } from 'vue'
+import {
+    createApp
+} from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-router.push('/browse' );
+import axios from 'axios'
+router.push('/browse');
 
-
-
-
-
-createApp(App).use(store).use(router).mount('#app')
+axios.defaults.baseURL = 'http://localhost:3000/';
+var Vue = createApp(App)
+Vue.use(store)
+Vue.use(router)
+Vue.config.globalProperties.$http = axios;
+Vue.mount('#app')
