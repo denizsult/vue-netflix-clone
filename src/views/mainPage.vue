@@ -91,22 +91,31 @@
       </div>
 
       <div ref="inner" :style="innerStyles" class="inner">
-        <div v-for="(item) in items" :key="item.id" class="card">
+        <div v-for="(item) in items" :key="item.id" class="card ">
+         
+         
+         
           <img :src="'http://image.tmdb.org/t/p/w780/' + item.backdrop_path" />
-
-          <div class="infoWindow">
+          <div class="infoWindow anime">
             <div class="item-card">
               <div>
-                <h2>{{ item.title }}</h2>
-                <button>Listeme Ekle</button>
+                <p id="itemTitle">{{ item.title }}</p>
+
+                <a id="listeEkle">Listeme Ekle</a>
+
                 <img
-                  @click="openModal($event, item)"
+                    @click="openModal($event, item)"
                   width="30"
+                  style="padding-left:40px"
                   src="../assets/images/info.png"
                   alt
                 />
               </div>
-              <small>Rank: {{ item.vote_average }}</small>
+
+              <small>
+                Rank:
+                <span style="color:green">{{ item.vote_average }}</span>
+              </small>
             </div>
           </div>
         </div>
@@ -222,71 +231,20 @@ export default {
 </script>
 
 <style>
-.modal {
-  position: fixed;
-  left: 0;
-  bottom: 0px;
-  right: 0;
-  top: 100px;
-  margin: auto;
-  background: #141414;
-  border: 1px solid black;
-  width: 50%;
-  height: 100%;
-  z-index: 2;
+.anime{
+  animation-duration: 1s;
+  animation-name: fadeIn;
+
+
 }
-.modal:first-child {
-  width: 50vw;
-  height: 70%;
-}
-#close {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  padding: 15px;
-  width: 40px;
-  opacity: 0.9;
-  cursor: pointer;
-  background: #141414;
-  border-radius: 50px;
-  color: white;
-  font-size: 20px;
-  padding: 5px;
+@keyframes fadeIn {
+  from {
+   height: 0;
+  }
+  to {
+    height: 100%;
+  }
 }
 
-.modal-buttons {
-  position: relative;
-  left: 30px;
-  bottom: 120px;
-  width: 35%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
 
-.modal-button-1 {
-  width: 160px;
-  height: 40px;
-  border-radius: 5px;
-  border: none;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.genel {
-  min-height: 1000px;
-}
-
-.item-card > div {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding-top: 10px;
-}
 </style>
