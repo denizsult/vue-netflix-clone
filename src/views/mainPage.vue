@@ -1,7 +1,14 @@
 <template>
   <div
-    :style="{ background: scrollPosition > 50 ? 'black !important' : 'transparent' }"
+    :style="{
+      background: scrollPosition > 50 ? 'black !important' : 'transparent', transition: 'background 0.5s',
+      opacity: modal ? 0.5 : 1,
+    
+    
+    
+    }"
     class="navbar-pinned"
+    id="navbar-pinned"
   >
     <div class="navbar">
       <div class="nav-1">
@@ -63,7 +70,12 @@
     </div>
   </div>
 
-  <div @click="genelTiklama" :style="modal ? { opacity: 0.3 } : { opacity: 1 }" class="genel">
+  <div
+    @click="genelTiklama"
+    :style="modal ? { opacity: 0.1 } : { opacity: 1 }"
+    id="genel"
+    class="genel"
+  >
     <div class="billboard">
       <img class="billboard-img" src="../assets/images/bg.jpg" alt />
 
@@ -75,7 +87,7 @@
       </div>
       <div class="billboard-buttons">
         <button class="billboard-button-1">
-          <img width="50" src="http://simpleicon.com/wp-content/uploads/play1.svg" alt /> Oynat
+          <img width="70" src="http://simpleicon.com/wp-content/uploads/play1.svg" alt /> Oynat
         </button>
         <button class="billboard-button-2">
           <img width="30" src="../assets/images/info.png" alt />
@@ -86,17 +98,11 @@
 
     <div class="slide">
       <h3 class="slide-head">Tanıdık Filmler</h3>
-      <div @click="prev" class="btn-left">
-        <img width="50" src="../assets/images/left.png" alt />
-      </div>
 
-      <div ref="inner" :style="innerStyles" class="inner">
-        <div v-for="(item) in items" :key="item.id" class="card ">
-         
-         
-         
+      <div ref="inner " :style="innerStyles" class="inner">
+        <div v-for="(item) in items" :key="item.id" class="card">
           <img :src="'http://image.tmdb.org/t/p/w780/' + item.backdrop_path" />
-          <div class="infoWindow anime">
+          <div class="infoWindow">
             <div class="item-card">
               <div>
                 <p id="itemTitle">{{ item.title }}</p>
@@ -104,7 +110,7 @@
                 <a id="listeEkle">Listeme Ekle</a>
 
                 <img
-                    @click="openModal($event, item)"
+                  @click="openModal($event, item)"
                   width="30"
                   style="padding-left:40px"
                   src="../assets/images/info.png"
@@ -119,25 +125,125 @@
             </div>
           </div>
         </div>
+
+        <div class="slider-buttons">
+          <img @click="prev" class="btn-left" src="../assets/images/left.png" alt />
+
+          <div @click="next" class="btn-right">
+            <img src="../assets/images/right.png" alt />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-2">
+      <div ref="section-2-inner " :style="innerStyles" class="section-2-inner">
+        <div v-for="(item) in items" :key="item.id" class="card">
+          <img :src="'http://image.tmdb.org/t/p/w780/' + item.backdrop_path" />
+          <div class="infoWindow">
+            <div class="item-card">
+              <div>
+                <p id="itemTitle">{{ item.title }}</p>
+
+                <a id="listeEkle">Listeme Ekle</a>
+
+                <img
+                  @click="openModal($event, item)"
+                  width="30"
+                  style="padding-left:40px"
+                  src="../assets/images/info.png"
+                  alt
+                />
+              </div>
+
+              <small>
+                Rank:
+                <span style="color:green">{{ item.vote_average }}</span>
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-2-buttons">
+          <img @click="prev" class="section-2-btn-left" src="../assets/images/left.png" alt />
+
+          <div @click="next" class="section-2-btn-right">
+            <img src="../assets/images/right.png" alt />
+          </div>
+        </div>
       </div>
 
-      <div @click="next" class="btn-right">
-        <img width="50" src="../assets/images/right.png" alt />
+      <div>
+        <img @click="prev" class="section-2-btn-left" src="../assets/images/left.png" alt />
+
+        <div @click="next" class="section-2-btn-right">
+          <img src="../assets/images/right.png" alt />
+        </div>
+
+        <div ref="section-2-inner " :style="innerStyles" class="section-2-inner">
+          <div v-for="(item) in items" :key="item.id" class="card">
+            <img :src="'http://image.tmdb.org/t/p/w780/' + item.backdrop_path" />
+            <div class="infoWindow">
+              <div class="item-card">
+                <div>
+                  <p id="itemTitle">{{ item.title }}</p>
+
+                  <a id="listeEkle">Listeme Ekle</a>
+
+                  <img
+                    @click="openModal($event, item)"
+                    width="30"
+                    style="padding-left:40px"
+                    src="../assets/images/info.png"
+                    alt
+                  />
+                </div>
+
+                <small>
+                  Rank:
+                  <span style="color:green">{{ item.vote_average }}</span>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div v-if="modal" class="modal animate__animated animate__zoomIn">
-    <img style="width: 100%;" :src="'http://image.tmdb.org/t/p/w780/' + modalData.backdrop_path" />
-    <button @click="modal = false" id="close">X</button>
+  <div :class="modal ? 'modal-responsive' : ''">
+    <div v-if="modal" class="modal animate__animated animate__zoomIn">
+      <img style="width: 100%;" :src="'http://image.tmdb.org/t/p/w780/' + modalData.backdrop_path" />
 
-    <div class="modal-buttons">
-      <button class="modal-button-1">
-        <img width="50" src="http://simpleicon.com/wp-content/uploads/play1.svg" alt /> Oynat
-      </button>
-      <button>2</button>
-      <button>3</button>
-      <button>4</button>
+      <button @click="closeModal" id="close">X</button>
+      <div id="modal-shadow"></div>
+
+      <div class="modal-capital">
+        <h1>{{ modalData.title }}</h1>
+      </div>
+      <div class="modal-buttons">
+        <a class="modal-button-1">
+          <img width="62" src="http://simpleicon.com/wp-content/uploads/play1.svg" alt /> Oynat
+        </a>
+        <a class="modal-button-2">
+          <img width="40" src="../assets/images/plus.png" alt />
+        </a>
+        <a class="modal-button-2">
+          <img width="40" src="../assets/images/like.png" alt />
+        </a>
+        <a class="modal-button-2">
+          <img width="40" src="../assets/images/dislike.png" alt />
+        </a>
+      </div>
+      <div class="modal-content-2">
+        <h3>
+          Puan:
+          <span style="color:green">{{ modalData.vote_average }}</span> İzlenme:
+          <span style="color:green">{{ modalData.popularity }}</span>
+        </h3>
+
+        <p>{{ modalData.overview }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -175,6 +281,8 @@ export default {
     axios('https://api.themoviedb.org/3/discover/movie?region=TR&api_key=c667b178831c1113537d09a0da92888f').then((res) => {
       this.items = res.data.results;
     })
+    document.title = 'Ana Sayfa - Metflix'
+
   },
 
   mounted() {
@@ -208,10 +316,32 @@ export default {
       return this.modal ? true : false;
 
     },
+    closeModal() {
+      this.modal = false;
+      document.title = 'Ana Sayfa - Metflix'
+      let body = document.getElementById('genel');
+      const scrollY = body.style.top;
+      body.style.position = '';
+      body.style.overflowY = 'auto';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    },
+    
+    
+    
+    
     openModal(event, data) {
       if (!this.genelTiklama()) {
         this.modal = true;
         this.modalData = data;
+        document.title = data.title + ' - Metflix';
+
+
+        let body = document.getElementById('genel');
+        body.style.top = `-${window.scrollY}px`;
+        body.style.position = 'fixed';
+        body.style.overflowY = 'hidden';
+          body.style.overflowX = 'hidden';
+
       }
 
 
@@ -229,22 +359,7 @@ export default {
   }
 };
 </script>
-
 <style>
-.anime{
-  animation-duration: 1s;
-  animation-name: fadeIn;
-
-
-}
-@keyframes fadeIn {
-  from {
-   height: 0;
-  }
-  to {
-    height: 100%;
-  }
-}
-
-
 </style>
+
+ 
