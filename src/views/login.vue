@@ -102,8 +102,8 @@
 export default {
     data() {
         return {
-            email: "",
-            password: "",
+            email: "demo",
+            password: "demo",
             emailErr: false,
             passErr: false,
             errorText: "Girdiğiniz Bilgiler Hatalı!",
@@ -131,7 +131,21 @@ export default {
 
 
             if (this.email != "" && this.password != "" && this.spin) {
-                this.$http.post('/login', {
+                
+                if(this.email == 'demo' && this.password  =='demo'){
+                    let data = {
+                        email: this.email,
+                        name: 'Demo',
+                        
+                     }
+
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('user', JSON.stringify(data));
+                    this.$router.push('/browse');
+
+
+                }else{
+                     this.$http.post('/login', {
                     email: this.email,
                     password: this.password
                 }).then((response) => {
@@ -152,6 +166,8 @@ export default {
                         }, 1500);
                     }
                 });
+                }
+
 
             }
 

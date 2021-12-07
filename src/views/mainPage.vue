@@ -3,9 +3,6 @@
     :style="{
       background: scrollPosition > 50 ? 'black !important' : 'transparent', transition: 'background 0.5s',
       opacity: modal ? 0.5 : 1,
-    
-    
-    
     }"
     class="navbar-pinned"
     id="navbar-pinned"
@@ -137,7 +134,8 @@
     </div>
 
     <div class="section-2">
-      <div ref="section-2-inner " :style="innerStyles" class="section-2-inner">
+      <div v-for="slide in slides" :key="slide.id" :style="innerStyles" class="section-2-inner">
+        <h3 class="section-2-head">{{ slide.title }}</h3>
         <div v-for="(item) in items" :key="item.id" class="card">
           <img :src="'http://image.tmdb.org/t/p/w780/' + item.backdrop_path" />
           <div class="infoWindow">
@@ -167,45 +165,7 @@
         <div class="section-2-buttons">
           <img @click="prev" class="section-2-btn-left" src="../assets/images/left.png" alt />
 
-          <div @click="next" class="section-2-btn-right">
-            <img src="../assets/images/right.png" alt />
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <img @click="prev" class="section-2-btn-left" src="../assets/images/left.png" alt />
-
-        <div @click="next" class="section-2-btn-right">
-          <img src="../assets/images/right.png" alt />
-        </div>
-
-        <div ref="section-2-inner " :style="innerStyles" class="section-2-inner">
-          <div v-for="(item) in items" :key="item.id" class="card">
-            <img :src="'http://image.tmdb.org/t/p/w780/' + item.backdrop_path" />
-            <div class="infoWindow">
-              <div class="item-card">
-                <div>
-                  <p id="itemTitle">{{ item.title }}</p>
-
-                  <a id="listeEkle">Listeme Ekle</a>
-
-                  <img
-                    @click="openModal($event, item)"
-                    width="30"
-                    style="padding-left:40px"
-                    src="../assets/images/info.png"
-                    alt
-                  />
-                </div>
-
-                <small>
-                  Rank:
-                  <span style="color:green">{{ item.vote_average }}</span>
-                </small>
-              </div>
-            </div>
-          </div>
+          <img @click="next" class="section-2-btn-right" src="../assets/images/right.png" alt />
         </div>
       </div>
     </div>
@@ -269,6 +229,24 @@ export default {
         },
 
       },
+
+      slides:
+      {
+        slide1: {
+          id: 1,
+          title: "Slide 1"
+
+        },
+        slide2: {
+          id: 2,
+          title: "Slide 2",
+        },
+        slide3: {
+          id: 3,
+          title: "Slide 3",
+        },
+
+      },
       modal: false,
       modalData: '',
       scrollPosition: 0,
@@ -277,10 +255,12 @@ export default {
   created() {
     this.user = JSON.parse(localStorage.getItem("user"));
     this.user != null ? true : router.push("/browse");
+
     window.addEventListener('scroll', this.handleScroll);
     axios('https://api.themoviedb.org/3/discover/movie?region=TR&api_key=c667b178831c1113537d09a0da92888f').then((res) => {
       this.items = res.data.results;
     })
+
     document.title = 'Ana Sayfa - Metflix'
 
   },
@@ -288,15 +268,8 @@ export default {
   mounted() {
     this.user = JSON.parse(localStorage.getItem("user"));
     this.profiles.Profil1.name = this.user.name;
-
-    /* $(window).click(function () {
-      //Hide the menus if visible
-    });
-
-    $('#modal').click(function (event) {
-      alert('xd')
-      event.stopPropagation();
-    }); */
+    /* $(window).click(function () {       //Hide the menus if visible     });
+    $('#modal').click(function (event) {       alert('xd')       event.stopPropagation();     }); */
   },
 
 
@@ -325,28 +298,22 @@ export default {
       body.style.overflowY = 'auto';
       window.scrollTo(0, parseInt(scrollY || '0') * -1);
     },
-    
-    
-    
-    
+
+
     openModal(event, data) {
       if (!this.genelTiklama()) {
         this.modal = true;
         this.modalData = data;
         document.title = data.title + ' - Metflix';
-
-
         let body = document.getElementById('genel');
         body.style.top = `-${window.scrollY}px`;
         body.style.position = 'fixed';
         body.style.overflowY = 'hidden';
-          body.style.overflowX = 'hidden';
+        body.style.overflowX = 'hidden';
 
       }
 
-
     },
-
     handleScroll() {
       this.scrollPosition = window.scrollY;
     },

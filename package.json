@@ -1,17 +1,16 @@
 {
-  "name": "metflix",
+  "name": "test",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "start": "nodemon server/server.js"
   },
   "dependencies": {
     "animate.css": "^4.1.1",
-    "axios": "^0.23.0",
+    "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
@@ -21,7 +20,8 @@
     "jquery": "^3.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.12",
-    "vue": "^3.2.20",
+    "nodemon": "^2.0.15",
+    "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
   },
@@ -29,16 +29,12 @@
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-plugin-unit-jest": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
-    "@vue/test-utils": "^2.0.0-0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0",
-    "typescript": "~3.9.3",
-    "vue-jest": "^5.0.0-0"
+    "eslint-plugin-vue": "^7.0.0"
   },
   "eslintConfig": {
     "root": true,
@@ -52,28 +48,11 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {},
-    "overrides": [
-      {
-        "files": [
-          "**/__tests__/*.{j,t}s?(x)",
-          "**/tests/unit/**/*.spec.{j,t}s?(x)"
-        ],
-        "env": {
-          "jest": true
-        }
-      }
-    ]
+    "rules": {}
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead"
-  ],
-  "jest": {
-    "preset": "@vue/cli-plugin-unit-jest",
-    "transform": {
-      "^.+\\.vue$": "vue-jest"
-    }
-  }
+  ]
 }

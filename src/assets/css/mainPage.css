@@ -254,7 +254,7 @@
 
 .slide {
   position: relative;
-  top: -260px;
+  top: -290px;
   left: -30px;
   width: 100vw;
   height: 600px;
@@ -281,43 +281,37 @@
 }
 
 .card>img {
-  width: 320px;
+  width: 290px;
   border: 3px solid transparent;
   border-radius: 10px;
   cursor: pointer;
+  z-index: 10;
 
 }
 
-
-.card:hover>.infoWindow {
-  z-index: 1;
-  width: 500px;
-
-}
 
 
 
 .card:hover>img {
-  width: 500px;
+  width: 430px;
 }
 
 
 .card:hover>.infoWindow {
-  width: 502px;
+  width: 430px;
   display: block;
   position: relative;
   top: -10px;
   border-radius: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+  background: #303030;
+  height: 140px;
+  z-index: 9;
 }
 
 .infoWindow {
   display: none;
-  background: #303030;
-  width: 345px;
-  height: 140px;
-
 }
 
 
@@ -327,15 +321,52 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  bottom: 15%;
+  bottom: -5px;
   margin-left: 20px;
   padding: 10px;
   font-size: 15px;
 }
 
+.item-card>div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 25px;
+  white-space: pre-line;
+  text-align: left;
+  flex-wrap: wrap;
+  padding-top: 50px;
+}
+
+.item-card>small {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+#itemTitle {
+  font-size: 20px;
+  font-weight: 600;
+  width: 150px;
+  height: 30px;
+  color: white;
+  padding-left: 0 !important;
+}
+
+#listeEkle {
+  display: block;
+  border: 2px solid #fff;
+  width: 100px;
+  height: 20px;
+
+  text-align: center;
+}
+
 
 .item-card>img {
-  width: 50px;
+  width: 30px;
   position: absolute;
   top: 90%;
 }
@@ -375,54 +406,64 @@
 
 .section-2 {
   position: absolute;
-  top: 1170px;
+  top: 1270px;
   left: 50px;
   width: 100vw;
-  height: 600px;
   overflow: hidden !important;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
 
 }
 
-
-
 .section-2-inner {
   white-space: nowrap;
+}
 
+.section-2-head {
+  position: relative;
+  top: 0;
+  left: 10px;
+  font-size: 25px;
+  color: white;
 
 }
 
 
 .section-2-btn-left {
   position: relative;
-  top: -100px;
+
   width: 60px !important;
   transform: translateY(-50%);
   cursor: pointer;
-  z-index: 4;
+
 
 }
 
 .section-2-btn-right {
   position: relative;
-  top: -160px;
-  left: 1755px;
+  left: 1725px;
   width: 60px !important;
   transform: translateY(-50%);
   cursor: pointer;
-  z-index: 4;
-}
-
-
-.card:hover ~ .section-2-buttons{
-  display: none !important;
 
 }
 
-.card:hover ~ .slider-buttons{
-  display: none !important;
+
+.section-2-buttons{
+  z-index: 11;
+  position: relative;
+  top: -90px;
+}
+
+
+.card:hover ~ .section-2-buttons {
+  position: relative;
+  top: -240px;
+  z-index: 9;
+  height: 200px;
 
 }
+
+ 

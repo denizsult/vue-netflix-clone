@@ -1,59 +1,50 @@
-import {
-  createRouter,
-  createWebHistory
-} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import mainPage from '../views/mainPage'
 import login from '../views/login'
 import register from '../views/register'
 
-
 const routes = [{
-    path: '/browse',
-    name: 'browse',
-    component: Home,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/',
-    name: 'main',
-    component: mainPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
+  path: '/browse',
+  name: 'browse',
+  component: Home,
+  meta: {
+    requiresAuth: true
+  }
+},
+{
+  path: '/',
+  name: 'main',
+  component: mainPage,
+  meta: {
+    requiresAuth: true
+  }
+},
 
-  {
-    path: '/login',
-    name: 'login',
-    component: login,
-    meta: {
-      requiresGuest: true
-    }
-  },
-  {
-    path: '/register',
-    name: 'register',
-    component: register,
-    meta: {
-      requiresGuest: true
-    }
-  },
+{
+  path: '/login',
+  name: 'login',
+  component: login,
+  meta: {
+    requiresGuest: true
+  }
+},
+{
+  path: '/register',
+  name: 'register',
+  component: register,
+  meta: {
+    requiresGuest: true
+  }
+},
 
 ]
 
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+history: createWebHistory(process.env.BASE_URL),
+routes
 })
-
-
-
-
-
 
 
 router.beforeEach((to, from, next) => {
@@ -73,5 +64,4 @@ router.beforeEach((to, from, next) => {
     next()
   }
 })
-
 export default router

@@ -106,42 +106,7 @@
 
 }
 
-.item-card>div {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
-  margin-bottom: 25px;
-  white-space: pre-line;
-  text-align: left;
-  flex-wrap: wrap;
-  padding-top: 50px;
-}
 
-.item-card>small {
-  font-size: 20px;
-  font-weight: 600;
-}
-
-#itemTitle {
-  font-size: 20px;
-  font-weight: 600;
-  width: 150px;
-  height: 30px;
-  color: white;
-  padding-left: 0 !important;
-}
-
-#listeEkle {
-  display: block;
-  border: 2px solid #fff;
-  width: 200px;
-  height: 20px;
-
-  text-align: center;
-}
 
 .modal-content-2 {
   display: flex;
