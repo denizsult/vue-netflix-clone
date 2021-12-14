@@ -87,8 +87,7 @@ router.post("/register", async (req, res) => {
       return res.status(409).send("E-Posta Daha Önceden Alınmış.");
     }
 
-    //Kullanıcı şifre hashleniyor
-    encryptedPassword = await bcrypt.hash(password, 10);
+    
 
     // Veritabanına yeni bir kullanıcı ekle
     const user = await User.create({
